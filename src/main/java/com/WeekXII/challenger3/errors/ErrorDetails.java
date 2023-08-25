@@ -1,9 +1,7 @@
-package com.WeekXII.challenger3.exceptions;
+package com.WeekXII.challenger3.errors;
 
-
-
+import java.io.Serializable;
 import java.util.Date;
-
 
 public class ErrorDetails {
     private Date timestamp;
@@ -27,5 +25,4 @@ public class ErrorDetails {
     public String getDetails() {
         return details;
     }
-
 }

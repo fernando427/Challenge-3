@@ -1,9 +1,6 @@
 package com.WeekXII.challenger3.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
-@Builder
 public class Post {
+
+    @Id
+    @Column(unique=true)
+    private Long id;
 
     @Column(name = "userId")
     private Long userId;
-
-    @Id
-    private Long id;
 
     @Column(name = "title")
     private String title;
