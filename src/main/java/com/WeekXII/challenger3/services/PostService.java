@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface PostService {
 
-    Post save(long id);
+    Post processPost(long id);
 
     Post disablePost(long id);
 
     List<Post> getAllPosts(int pageNo, int pageSize);
+
+    Post reprocessPost(long id);
 
     //Post findById(long id);
 }

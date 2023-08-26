@@ -1,7 +1,7 @@
 package com.WeekXII.challenger3.services;
 
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
-import com.WeekXII.challenger3.client.response.JsonplaceholderResponse;
+import com.WeekXII.challenger3.client.response.JsonplaceholderPostResponse;
 import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.HistoryRepository;
@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post save(long id) {
+    public Post processPost(long id) {
         /*try {
             Post postExist = postExists(id);
             if(postExist == null){
@@ -54,8 +54,8 @@ public class PostServiceImpl implements PostService {
         Post postExist = postExists(id);
         if(postExist == null){
 
-            JsonplaceholderResponse jsonplaceholderResponse = jsonplaceholderClient.getPost(id);
-            postSave = mapper.map(jsonplaceholderResponse, Post.class);
+            JsonplaceholderPostResponse jsonplaceholderPostResponse = jsonplaceholderClient.getPost(id);
+            postSave = mapper.map(jsonplaceholderPostResponse, Post.class);
             postSave.setStatus("ENABLED");
 
             return postRepository.save(postSave);
@@ -89,15 +89,24 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAllPosts(int pageNo, int pageSize) {
         String enabledStatus = "ENABLED";
-
         Pageable pageable= PageRequest.of(pageNo,pageSize);
-
         Page<Post> postPages = postRepository.findByStatus(enabledStatus, pageable);
-
         List<Post> posts = postPages.stream().map(p -> mapper.map(p, Post.class)).collect(Collectors.toList());
 
         return posts;
     }
+
+    @Override
+    public Post reprocessPost(long id) {
+        Post postExist = postExists(id);
+        if(postExist != null){
+            postExist.setStatus("ENABLED");
+            return postRepository.save(postExist);
+        } else {
+            throw new ValueAlreadyExistsException("Post", "ID", id);
+        }
+    }
+
 
     private Post postExists(long theId) {
         Optional<Post> result = postRepository.findById(theId);
