@@ -8,5 +8,9 @@ public interface PostService {
 
     Post save(long id);
 
-    Post findById(long theId);
+    Post disablePost(long id);
+
+    List<Post> getAllPosts(int pageNo, int pageSize);
+
+    //Post findById(long id);
 }

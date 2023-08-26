@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient(name = "JsonplaceholderClient", url = "https://jsonplaceholder.typicode.com")
 public interface JsonplaceholderClient {
     @GetMapping("/posts")
-    List<JsonplaceholderResponse> getPosts();
+    List<JsonplaceholderResponse> getAllPost();
 
     @GetMapping("/posts/{id}")
     JsonplaceholderResponse getPost(@PathVariable long id);
