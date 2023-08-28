@@ -1,4 +1,4 @@
-package com.WeekXII.challenger3.services;
+package com.WeekXII.challenger3.services.impl;
 
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.client.response.JsonplaceholderPostResponse;
@@ -8,6 +8,8 @@ import com.WeekXII.challenger3.exceptions.StatusAlreadyDisabledException;
 import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.PostRepository;
+import com.WeekXII.challenger3.services.HistoryService;
+import com.WeekXII.challenger3.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

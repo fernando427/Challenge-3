@@ -1,4 +1,4 @@
-package com.WeekXII.challenger3.services;
+package com.WeekXII.challenger3.services.impl;
 
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.client.response.JsonplaceholderCommentResponse;
@@ -10,6 +10,7 @@ import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.CommentRepository;
 import com.WeekXII.challenger3.repositories.HistoryRepository;
 import com.WeekXII.challenger3.repositories.PostRepository;
+import com.WeekXII.challenger3.services.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;

@@ -1,8 +1,9 @@
-package com.WeekXII.challenger3.services;
+package com.WeekXII.challenger3.services.impl;
 
 import com.WeekXII.challenger3.model.History;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.HistoryRepository;
+import com.WeekXII.challenger3.services.HistoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
