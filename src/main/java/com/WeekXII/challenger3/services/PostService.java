@@ -14,5 +14,9 @@ public interface PostService {
 
     Post reprocessPost(long id);
 
+    void validateId(long id);
+
+    void postExists(long id);
+
     //Post findById(long id);
 }

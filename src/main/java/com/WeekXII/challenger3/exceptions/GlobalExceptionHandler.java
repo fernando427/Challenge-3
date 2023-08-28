@@ -28,4 +28,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IdValueOutOfBoundException.class)
+    public ResponseEntity<ErrorDetails> handleIdValueOutOfBoundException(IdValueOutOfBoundException exception,
+                                                                          WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(StatusAlreadyDisabledException.class)
+    public ResponseEntity<ErrorDetails> handleStatusAlreadyDisabledException(StatusAlreadyDisabledException exception,
+                                                                         WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }

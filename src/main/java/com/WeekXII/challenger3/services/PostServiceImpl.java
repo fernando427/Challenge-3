@@ -2,6 +2,9 @@ package com.WeekXII.challenger3.services;
 
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.client.response.JsonplaceholderPostResponse;
+import com.WeekXII.challenger3.exceptions.IdValueOutOfBoundException;
+import com.WeekXII.challenger3.exceptions.ResourceNotFoundException;
+import com.WeekXII.challenger3.exceptions.StatusAlreadyDisabledException;
 import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.HistoryRepository;
@@ -36,56 +39,26 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post processPost(long id) {
-        /*try {
-            Post postExist = postExists(id);
-            if(postExist == null){
-                JsonplaceholderResponse jsonplaceholderResponse = jsonplaceholderClient.getPost(id);
-                postSave = mapper.map(jsonplaceholderResponse, Post.class);
-                return postRepository.save(postSave);
-            } else {
-                throw new ValueAlreadyExistsException("Post", "ID", id);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }*/
-
-        Post postSave = null;
-        Post postExist = postExists(id);
-        if(postExist == null){
-
-            JsonplaceholderPostResponse jsonplaceholderPostResponse = jsonplaceholderClient.getPost(id);
-            postSave = mapper.map(jsonplaceholderPostResponse, Post.class);
-            postSave.setStatus("ENABLED");
-
-            return postRepository.save(postSave);
-        } else {
-            throw new ValueAlreadyExistsException("Post", "ID", id);
-        }
-
-        /*
-            Falta adicionar tratamentos de erro para quando o ID não existir
-            e para quando o ID não for válido.
-        */
+        validateId(id);
+        postExists(id);
+        JsonplaceholderPostResponse jsonplaceholderPostResponse = jsonplaceholderClient.getPost(id);
+        Post postSave = mapper.map(jsonplaceholderPostResponse, Post.class);
+        postSave.setStatus("ENABLED");
+        return postRepository.save(postSave);
     }
 
-    /*
-    Disabilita um post, fazendo com que o mesmo não entre na paginação.
-    */
     @Override
     public Post disablePost(long id) {
-        Post postExist = postExists(id);
-        if(postExist != null && postExist.getStatus() == "ENABLED"){
+        validateId(id);
+        Post postExist = findById(id);
+        if(postExist.getStatus() == "ENABLED"){
             postExist.setStatus("DISABLED");
             return postRepository.save(postExist);
         } else {
-            throw new ValueAlreadyExistsException("Post", "ID", id);
+            throw new StatusAlreadyDisabledException();
         }
     }
 
-    /*
-    Listagem de todas as postagens salvas no banco de dados sem o status "DISABLED".
-    */
     @Override
     public List<Post> getAllPosts(int pageNo, int pageSize) {
         String enabledStatus = "ENABLED";
@@ -98,38 +71,26 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post reprocessPost(long id) {
-        Post postExist = postExists(id);
-        if(postExist != null){
-            postExist.setStatus("ENABLED");
-            return postRepository.save(postExist);
-        } else {
-            throw new ValueAlreadyExistsException("Post", "ID", id);
-        }
+        validateId(id);
+        Post postExist = findById(id);
+        postExist.setStatus("ENABLED");
+        return postRepository.save(postExist);
     }
 
 
-    private Post postExists(long theId) {
+    public void postExists(long theId) {
         Optional<Post> result = postRepository.findById(theId);
-
-        Post thePost = null;
-
         if(result.isPresent()) {
-            thePost = result.get();
-            thePost.setUserId(result.get().getUserId());
-            thePost.setId(result.get().getId());
-            thePost.setBody(result.get().getBody());
-            thePost.setTitle(result.get().getTitle());
-            thePost.setStatus(result.get().getStatus());
-            return thePost;
-        } else {
-            return thePost;
+            throw new ValueAlreadyExistsException("Post", "ID", theId);
         }
     }
 
+    public void validateId(long id) {
+        if (id < 1 || id > 100) {
+            throw new IdValueOutOfBoundException("Post", id);
+        }
+    }
 
-
-    /*
-    @Override
     public Post findById(long theId) {
         Optional<Post> result = postRepository.findById(theId);
 
@@ -144,7 +105,7 @@ public class PostServiceImpl implements PostService {
             thePost.setStatus(result.get().getStatus());
             return thePost;
         } else {
-            throw new ValueAlreadyExistsException("Post", "ID", theId);
+            throw new ResourceNotFoundException("Post", "ID", theId);
         }
-    }*/
+    }
 }

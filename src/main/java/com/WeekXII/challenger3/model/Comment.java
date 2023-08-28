@@ -2,9 +2,7 @@ package com.WeekXII.challenger3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class Comment {
     private String body;
 
     @ManyToOne
-    @JsonIgnore
+    @Getter(AccessLevel.NONE)
     private Post post;
 
 }

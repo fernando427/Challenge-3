@@ -40,13 +40,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public List<Comment> save(long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
         List<JsonplaceholderCommentResponse> jsonplaceholderCommentResponse = jsonplaceholderClient.getComment(id);
         List<Comment> commentSave = jsonplaceholderCommentResponse.stream().map(p -> mapper.map(p, Comment.class)).collect(Collectors.toList());
-
         commentRepository.saveAll(commentSave);
-
         return commentSave;
-
     }
 }

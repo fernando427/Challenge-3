@@ -25,35 +25,17 @@ public class JsonplaceholderController {
 
     @PostMapping("/processPost/{postId}")
     public ResponseEntity<Post> processPost(@PathVariable("postId") long postId) {
-        Post savedPost = null;
-        try {
-            savedPost = postService.processPost(postId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.processPost(postId));
     }
 
     @PostMapping("/disable/{postId}")
     public ResponseEntity<Post> disablePost(@PathVariable("postId") long postId) {
-        Post savedPost = null;
-        try {
-            savedPost = postService.disablePost(postId);
-            return ResponseEntity.ok(savedPost);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.ok(postService.disablePost(postId));
     }
 
     @PutMapping("/reprocessPost/{postId}")
     public ResponseEntity<Post> reprocessPost(@PathVariable("postId") long postId) {
-        Post savedPost = null;
-        try {
-            savedPost = postService.reprocessPost(postId);
-            return ResponseEntity.ok(savedPost);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
+        return ResponseEntity.ok(postService.reprocessPost(postId));
     }
 
     @GetMapping("/posts")
@@ -65,7 +47,7 @@ public class JsonplaceholderController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public List<Comment> saveComment(@PathVariable("postId") long postId) {
-        return commentService.save(postId);
+    public ResponseEntity<List<Comment>> saveComment(@PathVariable("postId") long postId) {
+        return ResponseEntity.ok(commentService.save(postId));
     }
 }
