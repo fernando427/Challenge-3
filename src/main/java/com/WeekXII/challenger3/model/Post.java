@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
 
@@ -22,5 +23,8 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<History> histories;
 
 }

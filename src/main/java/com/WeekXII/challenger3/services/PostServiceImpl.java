@@ -7,7 +7,6 @@ import com.WeekXII.challenger3.exceptions.ResourceNotFoundException;
 import com.WeekXII.challenger3.exceptions.StatusAlreadyDisabledException;
 import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Post;
-import com.WeekXII.challenger3.repositories.HistoryRepository;
 import com.WeekXII.challenger3.repositories.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,17 +23,17 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final JsonplaceholderClient jsonplaceholderClient;
-    private final HistoryRepository historyRepository;
-    private ModelMapper mapper;
+    private final HistoryService historyService;
+    private final ModelMapper mapper;
 
     public PostServiceImpl(PostRepository postRepository,
                            JsonplaceholderClient jsonplaceholderClient,
                            ModelMapper mapper,
-                           HistoryRepository historyRepository) {
+                           HistoryService historyService) {
         this.postRepository = postRepository;
         this.jsonplaceholderClient = jsonplaceholderClient;
         this.mapper = mapper;
-        this.historyRepository = historyRepository;
+        this.historyService = historyService;
     }
 
     @Override
@@ -44,7 +43,9 @@ public class PostServiceImpl implements PostService {
         JsonplaceholderPostResponse jsonplaceholderPostResponse = jsonplaceholderClient.getPost(id);
         Post postSave = mapper.map(jsonplaceholderPostResponse, Post.class);
         postSave.setStatus("ENABLED");
-        return postRepository.save(postSave);
+        postRepository.save(postSave);
+        historyService.saveHistory("ENABLED", postSave);
+        return postSave;
     }
 
     @Override
@@ -53,6 +54,7 @@ public class PostServiceImpl implements PostService {
         Post postExist = findById(id);
         if(postExist.getStatus() == "ENABLED"){
             postExist.setStatus("DISABLED");
+            historyService.saveHistory("DISABLED", postExist);
             return postRepository.save(postExist);
         } else {
             throw new StatusAlreadyDisabledException();
@@ -65,7 +67,6 @@ public class PostServiceImpl implements PostService {
         Pageable pageable= PageRequest.of(pageNo,pageSize);
         Page<Post> postPages = postRepository.findByStatus(enabledStatus, pageable);
         List<Post> posts = postPages.stream().map(p -> mapper.map(p, Post.class)).collect(Collectors.toList());
-
         return posts;
     }
 
@@ -74,6 +75,7 @@ public class PostServiceImpl implements PostService {
         validateId(id);
         Post postExist = findById(id);
         postExist.setStatus("ENABLED");
+        historyService.saveHistory("ENABLED", postExist);
         return postRepository.save(postExist);
     }
 

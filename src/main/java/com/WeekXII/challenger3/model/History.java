@@ -1,9 +1,7 @@
 package com.WeekXII.challenger3.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -14,18 +12,14 @@ import java.util.Date;
 @Entity
 @Table(name = "histories")
 public class History {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Date date;
-
-    @Column(name = "status")
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @Getter(AccessLevel.NONE)
     private Post post;
 
 }
