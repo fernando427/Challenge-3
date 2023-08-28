@@ -17,5 +17,5 @@ public interface JsonplaceholderClient {
     JsonplaceholderPostResponse getPost(@PathVariable long id);
 
     @GetMapping("/posts/{id}/comments")
-    JsonplaceholderCommentResponse getComment(@PathVariable long id);
+    List<JsonplaceholderCommentResponse> getComment(@PathVariable long id);
 }

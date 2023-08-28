@@ -3,6 +3,7 @@ package com.WeekXII.challenger3.services;
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.client.response.JsonplaceholderCommentResponse;
 import com.WeekXII.challenger3.client.response.JsonplaceholderPostResponse;
+import com.WeekXII.challenger3.exceptions.ResourceNotFoundException;
 import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Comment;
 import com.WeekXII.challenger3.model.Post;
@@ -39,15 +40,13 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public List<Comment> save(long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ValueAlreadyExistsException("Post", "id", id));
-        List<JsonplaceholderCommentResponse> jsonplaceholderCommentResponse = Collections.singletonList(jsonplaceholderClient.getComment(id));
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        List<JsonplaceholderCommentResponse> jsonplaceholderCommentResponse = jsonplaceholderClient.getComment(id);
         List<Comment> commentSave = jsonplaceholderCommentResponse.stream().map(p -> mapper.map(p, Comment.class)).collect(Collectors.toList());
 
-        List<Comment> commentSaved = commentSave.stream().map(p -> {
-            p.setPost(post);
-            return commentRepository.save(p);
-        }).collect(Collectors.toList());
+        commentRepository.saveAll(commentSave);
 
-        return commentSaved;
+        return commentSave;
+
     }
 }

@@ -1,9 +1,7 @@
 package com.WeekXII.challenger3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +12,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "comments")
 public class Comment {
-
-    private Long postNumber;
-
     @Id
     private Long id;
     private String name;
@@ -24,6 +19,7 @@ public class Comment {
     private String body;
 
     @ManyToOne
+    @JsonIgnore
     private Post post;
 
 }

@@ -20,7 +20,7 @@ public class Post {
     private String body;
     private String status;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
 
 }

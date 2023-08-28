@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class JsonplaceholderCommentResponse {
-    private Long postNumber;
+    private Long postId;
     private Long id;
     private String name;
     private String email;
