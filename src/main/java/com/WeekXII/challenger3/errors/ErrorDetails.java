@@ -1,6 +1,5 @@
 package com.WeekXII.challenger3.errors;
 
-import java.io.Serializable;
 import java.util.Date;
 
 public class ErrorDetails {

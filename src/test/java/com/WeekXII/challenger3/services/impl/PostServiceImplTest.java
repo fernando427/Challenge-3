@@ -3,19 +3,12 @@ package com.WeekXII.challenger3.services.impl;
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.exceptions.IdValueOutOfBoundException;
 import com.WeekXII.challenger3.exceptions.ResourceNotFoundException;
-import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.PostRepository;
 import com.WeekXII.challenger3.services.HistoryService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,7 +17,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
