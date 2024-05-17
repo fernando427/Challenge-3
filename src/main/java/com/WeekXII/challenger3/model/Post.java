@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
+@ToString(exclude = {"comments", "histories"})
 public class Post {
     @Id
     private Long id;
