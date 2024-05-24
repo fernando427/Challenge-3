@@ -2,22 +2,15 @@ package com.WeekXII.challenger3.services.impl;
 
 import com.WeekXII.challenger3.client.JsonplaceholderClient;
 import com.WeekXII.challenger3.client.response.JsonplaceholderCommentResponse;
-import com.WeekXII.challenger3.client.response.JsonplaceholderPostResponse;
-import com.WeekXII.challenger3.exceptions.ResourceNotFoundException;
-import com.WeekXII.challenger3.exceptions.ValueAlreadyExistsException;
 import com.WeekXII.challenger3.model.Comment;
 import com.WeekXII.challenger3.model.Post;
 import com.WeekXII.challenger3.repositories.CommentRepository;
-import com.WeekXII.challenger3.repositories.HistoryRepository;
-import com.WeekXII.challenger3.repositories.PostRepository;
 import com.WeekXII.challenger3.services.CommentService;
 import com.WeekXII.challenger3.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +19,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
     private final JsonplaceholderClient jsonplaceholderClient;
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     public CommentServiceImpl(CommentRepository commentRepository,
                               PostService postService,
