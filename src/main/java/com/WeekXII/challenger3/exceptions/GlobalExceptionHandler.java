@@ -22,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleValueAlreadyExistsException(ResourceNotFoundException exception,
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                           HttpServletRequest request){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.NOT_FOUND.value(),
                 exception.getMessage(), request.getRequestURI());

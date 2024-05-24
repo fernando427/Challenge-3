@@ -11,6 +11,7 @@ import com.WeekXII.challenger3.repositories.CommentRepository;
 import com.WeekXII.challenger3.repositories.HistoryRepository;
 import com.WeekXII.challenger3.repositories.PostRepository;
 import com.WeekXII.challenger3.services.CommentService;
+import com.WeekXII.challenger3.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +24,17 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final JsonplaceholderClient jsonplaceholderClient;
     private ModelMapper mapper;
 
     public CommentServiceImpl(CommentRepository commentRepository,
-                              PostRepository postRepository,
+                              PostService postService,
                               JsonplaceholderClient jsonplaceholderClient,
                               ModelMapper mapper) {
 
         this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
+        this.postService = postService;
         this.jsonplaceholderClient = jsonplaceholderClient;
         this.mapper = mapper;
 
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> save(long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
+        Post post = postService.findById(id);
         List<JsonplaceholderCommentResponse> jsonplaceholderCommentResponse = jsonplaceholderClient.getComment(id);
         List<Comment> commentSave = jsonplaceholderCommentResponse.stream().map(p -> mapper.map(p, Comment.class)).collect(Collectors.toList());
         commentRepository.saveAll(commentSave);
