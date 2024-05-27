@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class Challenger3ApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void main() {
+		Challenger3Application.main(new String[] {});
 	}
 
 }

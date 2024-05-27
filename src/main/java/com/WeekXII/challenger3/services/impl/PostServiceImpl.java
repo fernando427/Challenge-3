@@ -89,27 +89,17 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    @Override
+    public Post findById(long id) {
+        Optional<Post> result = postRepository.findById(id);
+        return result.orElseThrow(() -> new ResourceNotFoundException("Post", "ID", id));
+    }
+
     public void validateId(long id) {
         if (id < 1 || id > 100) {
             throw new IdValueOutOfBoundException("Post", id);
         }
     }
 
-    public Post findById(long theId) {
-        Optional<Post> result = postRepository.findById(theId);
 
-        Post thePost = null;
-
-        if(result.isPresent()) {
-            thePost = result.get();
-            thePost.setUserId(result.get().getUserId());
-            thePost.setId(result.get().getId());
-            thePost.setBody(result.get().getBody());
-            thePost.setTitle(result.get().getTitle());
-            thePost.setStatus(result.get().getStatus());
-            return thePost;
-        } else {
-            throw new ResourceNotFoundException("Post", "ID", theId);
-        }
-    }
 }
